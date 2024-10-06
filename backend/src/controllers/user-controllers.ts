@@ -1,7 +1,6 @@
 import User from "../models/User.js"
 import {compare, hash} from 'bcrypt'
 import { createToken } from "../utils/token-manager.js"
-import path from "path"
 import { COOKIE_NAME } from "../utils/constants.js"
 
 export const getAllUsers = async (req, res, next) => {
@@ -51,8 +50,8 @@ export const userSignup = async (req, res, next) => {
             httpOnly: true,
             signed: true
         })
-        
-        return res.status(200).json({message: "OK", id: user._id.toString()})
+
+        return res.status(200).json({message: "OK", name: user.name, email: user.email})
     } catch (error) {
         console.log(error)
         return res.status(200).json({message: "Error", cause: error.message})
@@ -91,7 +90,7 @@ export const userLogin = async (req, res, next) => {
             signed: true
         })
 
-        return res.status(200).json({ message: "OK", id: user._id.toString()})
+        return res.status(200).json({ message: "OK", name: user.name, email: user.email})
     } catch (error) {
         console.log(error)
         return res.status(200).json({message: "ERROR", cause: error.message})
