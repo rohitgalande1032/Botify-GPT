@@ -28,7 +28,7 @@ const Chat = () => {
     const newMessage: Message = { role: "user", content };
     setChatMessages((prev) => [...prev, newMessage]);
     const chatData = await sendChatRequest(content);
-    setChatMessages([...chatData.chats]);
+    setChatMessages((prev) => [...prev, ...chatData.chats]);
     //
   };
   const handleDeleteChats = async () => {
@@ -99,8 +99,11 @@ const Chat = () => {
               fontWeight: 700,
             }}
           >
-            {auth?.user?.name[0]}
-            {auth?.user?.name.split(" ")[1][0]}
+            {auth?.user?.name
+              ? `${auth.user.name.split(" ")[0][0] || ""}${
+                  auth.user.name.split(" ")[1]?.[0] || ""
+                }`
+              : ""}
           </Avatar>
           <Typography sx={{ mx: "auto", fontFamily: "work sans" }}>
             You are talking to a ChatBOT

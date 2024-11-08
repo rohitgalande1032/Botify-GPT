@@ -1,67 +1,104 @@
-import axios from "axios";
 export const loginUser = async (email: string, password: string) => {
-  const res = await axios.post("/user/login", { email, password });
-  if (res.status !== 200) {
+  const response = await fetch("/user/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
     throw new Error("Unable to login");
   }
-  const data = await res.data;
+
+  const data = await response.json();
   return data;
 };
 
-export const signupUser = async (
-  name: string,
-  email: string,
-  password: string
-) => {
-  const res = await axios.post("/user/signup", { name, email, password });
-  if (res.status !== 201) {
+export const signupUser = async (name: string, email: string, password: string) => {
+  const response = await fetch("http://localhost:5000/api/v1/user/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, password }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
     throw new Error("Unable to Signup");
   }
-  const data = await res.data;
+
+  const data = await response.json();
   return data;
 };
 
 export const checkAuthStatus = async () => {
-  const res = await axios.get("/user/auth-status");
-  if (res.status !== 200) {
+  const response = await fetch("http://localhost:5000/api/v1/user/auth-status", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
     throw new Error("Unable to authenticate");
   }
-  const data = await res.data;
+
+  const data = await response.json();
   return data;
 };
 
 export const sendChatRequest = async (message: string) => {
-  const res = await axios.post("/chat/new", { message });
-  if (res.status !== 200) {
-    throw new Error("Unable to send chat");
+  const response = await fetch("http://localhost:5000/api/v1/chat/new", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message }),
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    console.error('Server Error:', await response.text());
+    throw new Error('Server returned an error.');
   }
-  const data = await res.data;
+
+  const data = await response.json();
   return data;
 };
 
 export const getUserChats = async () => {
-  const res = await axios.get("/chat/all-chats");
-  if (res.status !== 200) {
-    throw new Error("Unable to send chat");
+  const response = await fetch("http://localhost:5000/api/v1/chat/all-chats", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to fetch chats");
   }
-  const data = await res.data;
+
+  const data = await response.json();
   return data;
 };
 
 export const deleteUserChats = async () => {
-  const res = await axios.delete("/chat/delete");
-  if (res.status !== 200) {
+  const response = await fetch("http://localhost:5000/api/v1/chat/delete", {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
     throw new Error("Unable to delete chats");
   }
-  const data = await res.data;
+
+  const data = await response.json();
   return data;
 };
 
 export const logoutUser = async () => {
-  const res = await axios.get("/user/logout");
-  if (res.status !== 200) {
-    throw new Error("Unable to delete chats");
+  const response = await fetch("http://localhost:5000/api/v1/user/logout", {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to logout");
   }
-  const data = await res.data;
+
+  const data = await response.json();
   return data;
 };
