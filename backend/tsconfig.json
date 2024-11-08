@@ -7,5 +7,6 @@
     "outDir": "dist",
     "allowSyntheticDefaultImports": true
   },
+  "typeRoots": ["node_modules/@types"],
   "include": ["src/**/*.ts", "src/index.ts"]
 }
